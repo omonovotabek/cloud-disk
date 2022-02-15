@@ -1,2 +1,4 @@
 # cloud-disk
-#new
+# client => vuejs
+# server => nodejs
+# mentor => ulbiTv
