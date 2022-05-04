@@ -1,19 +1,39 @@
-const express = require('express')
-const config = require('config')
-const db = require('./database/mongodb')
+require("dotenv").config();
 
-const app = express()
-const PORT = config.get('serverPort')
+// Подключаем бэкенд на Express.
+const express = require("express");
+const cors = require('cors')
+const morgan = require('morgan')
+const app = express();
+app.use(express.json());  
+app.use(cors())
+app.use(morgan('dev'))
 
-const startServer = async () => {
-  try {
-      db.connection()
-      app.listen(PORT, () => {
-          console.log('Server started on port', PORT);
-      })
-  } catch (error) {
-      console.log(error) 
+// Подключаем Mongoose и делаем коннект к базе данных.
+// Прописываем стандартные настройки Mongoose.
+const mongoose = require("mongoose");
+mongoose.connect(`${process.env.DB_URL}`)
+  .then(() => console.log('Mongodb connect ..'))
+  .catch((e) => console.log(e));
+
+// Подключаем маршруты для управления моделью Page.
+// const routes = require("./routes");
+// app.use("/api", routes);
+
+// Подключаем Nuxt в режиме nuxt.render. В этом примере нет отдельного процесса с Nuxt.
+// Nuxt работает в качестве middleware для Express без своего сервера на Connect.
+const { loadNuxt, build } = require("nuxt");
+const isDev = process.env.NODE_ENV !== "production";
+async function start() {
+  const nuxt = await loadNuxt(isDev ? "dev" : "start");
+  app.use(nuxt.render);
+  if (isDev) {
+    build(nuxt);
   }
+  app.listen(process.env.PORT || 3000, () => console.log(`Server listen = ${process.env.PORT}`));
 }
 
-startServer()
+// Запуск приложения.
+// start();
+
+app.listen(process.env.PORT || 5000, () => console.log(`Server listen = ${process.env.PORT}`));
