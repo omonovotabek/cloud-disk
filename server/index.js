@@ -4,6 +4,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require('cors')
 const morgan = require('morgan')
+const errorHandler = require('./middlewares/error')
 const app = express();
 app.use(express.json());  
 app.use(cors())
@@ -17,8 +18,9 @@ mongoose.connect(`${process.env.DB_URL}`)
   .catch((e) => console.log(e));
 
 // Подключаем маршруты для управления моделью Page.
-// const routes = require("./routes");
-// app.use("/api", routes);
+const routes = require("./routes");
+app.use("/api", routes);
+app.use(errorHandler)
 
 // Подключаем Nuxt в режиме nuxt.render. В этом примере нет отдельного процесса с Nuxt.
 // Nuxt работает в качестве middleware для Express без своего сервера на Connect.

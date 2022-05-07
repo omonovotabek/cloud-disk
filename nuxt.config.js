@@ -28,7 +28,14 @@ export default {
   ],
 
   plugins: [
+    '@/plugins/bootstrap-vue-icons',
+    '@/plugins/vee-validate',
+    '@/plugins/axios'
   ],
+
+  bootstrapVue: {
+   icons: true,
+  },
 
   components: true,
 
@@ -42,9 +49,10 @@ export default {
   ],
 
   axios: {
-    baseURL: process.env.BASE_URL,
+    baseURL: 'http://localhost:5000',
   },
 
   build: {
+    transpile: ["vee-validate/dist/rules"],
   }
 }
