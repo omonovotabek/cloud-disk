@@ -36,6 +36,6 @@ async function start() {
 }
 
 // Запуск приложения.
-// start();
+start();
 
-app.listen(process.env.PORT || 5000, () => console.log(`Server listen = ${process.env.PORT}`));
+

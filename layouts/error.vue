@@ -30,8 +30,8 @@ export default {
     const path = this.$route.path;
     const error = this.$route.query;
     if (error.message && error.apiUrl) {
-      const url = error.apiUrl.slice(4);
-      this.back = url;
+      // const url = error.apiUrl.slice(4);
+      // this.back = url;
       this.badRequest = "badRequest";
       this.error = error.message;
       this.$router.push("/badRequest");

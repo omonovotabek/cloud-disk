@@ -2,7 +2,7 @@
   <div>
     <alert-app :message="message" :alert="alert" />
     <navbar-app :navs="navs" />
-    <div class="d-flex justify-content-center mt-5">
+    <div class="d-flex justify-content-center mt-3">
       <nuxt />
     </div>
   </div>

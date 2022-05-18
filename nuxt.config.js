@@ -49,7 +49,7 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost:5000',
+    baseURL: process.env.BASE_URL,
   },
 
   build: {
