@@ -30,7 +30,8 @@ export default {
   computed: {
     messs() {
       const data = this.$store.getters["auth/dataObj"];
-      if (data.message) {
+      const { message } = this.$route.query;
+      if (data.message && !(message === 'logout')) {
         this.message = data.message;
         this.alert = "alert-success";
       }
