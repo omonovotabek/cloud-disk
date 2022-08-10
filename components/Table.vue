@@ -2,7 +2,9 @@
      <div class="row mt-5">
       <div class="d-flex col-12 font-weight-bold">
         <div class="col-2"></div>
-        <div class="col-6">Название</div>
+        <div class="col-4">Название</div>
+        <div class="col-1"></div>
+        <div class="col-1"></div>
         <div class="col-2 text-center">Дата</div>
         <div class="col-2 text-center">Размер</div>
       </div>
@@ -12,10 +14,23 @@
         :key="file.index"
       >
         <div class="col-2 text-center">
-          <img v-if="file.type === 'dir'" src="~/assets/dir.svg" alt="" />
+          <img 
+          v-if="file.type === 'dir'" 
+          src="~/assets/dir.svg" 
+          alt="" 
+          class="dir"
+          @click="openDir(file)"
+          />
           <img v-else src="~/assets/file.svg" alt="" />
         </div>
-        <div class="col-6">{{ file.name }}</div>
+        <div class="col-4">{{ file.name }}</div>
+        <div class="col-1">
+          <button  
+          v-if="file.type !== 'dir'" 
+          @click="onDownload(file)"
+          >downlaod</button></div>
+         <div class="col-1">
+          <button @click="onDelete(file)">delete</button></div>
         <div class="col-2 text-center">{{ file.date.slice(0, 10) }}</div>
         <div class="col-2 text-center">{{ file.size }}</div>
       </div>
@@ -23,7 +38,7 @@
 </template>
 <script>
 export default {
-    props:['files']
+    props:['files', 'openDir', 'onDownload', 'onDelete']
 }
 </script>
 
@@ -34,5 +49,8 @@ export default {
 .table-hover:hover {
   background-color: rgb(193, 193, 193);
   transform: scale(1.01);
+}
+.dir{
+  cursor: pointer;
 }
 </style>

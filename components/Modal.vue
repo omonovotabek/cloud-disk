@@ -5,8 +5,9 @@
       <div class="col-4 offset-4" @click.stop>
         <div class="card">
           <div class="card-header">
-            Salom
+            <input type="text" @input="onInput"/>
             <button @click="hide">ddf</button>
+            <button @click="onSubmit">ok</button>
           </div>
         </div>
       </div>
@@ -16,6 +17,7 @@
 
 <script>
 export default {
+  props: ["onSubmit", "onInput"],
   data() {
     return {
       showHide: false,
@@ -47,4 +49,3 @@ export default {
   top: 200px;
 }
 </style>
-

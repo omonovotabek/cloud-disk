@@ -4,10 +4,12 @@ require("dotenv").config();
 const express = require("express");
 const cors = require('cors')
 const morgan = require('morgan')
+const fileUpload = require('express-fileupload')
 const errorHandler = require('./middlewares/error')
 const app = express();
 app.use(express.json());  
 app.use(cors())
+app.use(fileUpload({}))
 app.use(morgan('dev'))
 
 // Подключаем Mongoose и делаем коннект к базе данных.

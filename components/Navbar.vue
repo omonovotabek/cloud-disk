@@ -6,16 +6,14 @@
         <h1 class="text-light">Cloud disk</h1>
       </div>    
     <div class="d-flex">
-      <nav-app v-for="nav of navs" :key="nav.index" :url="nav.url" :urlName="nav.urlName"/>
+      <b-nav-item v-for="nav of navs" :key="nav.index" :to="{path: nav.url}">{{nav.urlName}}</b-nav-item>
     </div>
     </b-navbar-nav>
   </b-navbar>
 </template>   
 
 <script>
-import NavApp from './Nav.vue'
 export default {
-  props:["navs"],
-  components:{NavApp}
+  props:["navs"]
 }
 </script>
