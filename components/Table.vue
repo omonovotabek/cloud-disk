@@ -30,15 +30,34 @@
           @click="onDownload(file)"
           >downlaod</button></div>
          <div class="col-1">
-          <button @click="onDelete(file)">delete</button></div>
+          <button 
+          @click="onDelete(file)"
+          :disabled="Boolean(file.childs.length)"
+          >delete</button></div>
         <div class="col-2 text-center">{{ file.date.slice(0, 10) }}</div>
-        <div class="col-2 text-center">{{ file.size }}</div>
+        <div class="col-2 text-center">{{ sizeFormat(file.size) }}</div>
       </div>
     </div>
 </template>
 <script>
 export default {
-    props:['files', 'openDir', 'onDownload', 'onDelete']
+    props:['files', 'openDir', 'onDownload', 'onDelete'],
+    methods:{
+       sizeFormat(size){
+        if(size === 0){
+          return "dir"
+        }
+        if(size>(1024*1024*1024)){
+          return (size/(1024*1024*1024)).toFixed(1) + 'Gb'
+        }
+        if(size>1024*1024){
+          return (size/(1024*1024)).toFixed(1) + 'Mb'
+        }
+         if(size>1024){
+          return (size/1024).toFixed(1) + 'Kb'
+        }
+     }
+    }
 }
 </script>
 
