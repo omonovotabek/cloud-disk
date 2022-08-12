@@ -14,8 +14,6 @@ app.use(cors())
 app.use(filePathMiddleware(path.resolve(__dirname, '../static/files')))
 app.use(fileUpload({}))
 
-
-
 // Подключаем Mongoose и делаем коннект к базе данных.
 // Прописываем стандартные настройки Mongoose.
 const mongoose = require("mongoose");

@@ -72,6 +72,7 @@ export default {
     },
 
     async openDir(file) {
+     
       this.files = await this.$store.dispatch("file/getFiles", {
         dirId: file._id,
       });
