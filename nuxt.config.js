@@ -15,11 +15,6 @@ export default {
     ]
   },
 
-  server: {
-    port: process.env.PORT,
-    host: "localhost",
-  },
-
   env: {
     baseUrl: process.env.BASE_URL,
   },
