@@ -4,16 +4,20 @@ require("dotenv").config();
 const express = require("express");
 const cors = require('cors')
 const path = require('path')
-const morgan = require('morgan')
+// const morgan = require('morgan')
 const fileUpload = require('express-fileupload')
 const errorHandler = require('./middlewares/error')
 const filePathMiddleware = require('./middlewares/filepathMiddleware')
+const helmet = require('helmet')
+const compression = require('compression')
 const app = express();
 app.use(express.json());  
 app.use(cors())
 app.use(filePathMiddleware(path.resolve(__dirname, '../static/files')))
 app.use(fileUpload({}))
-app.use(morgan('dev'))
+app.use(helmet())
+app.use(compression())
+// app.use(morgan('dev'))
 
 // Подключаем Mongoose и делаем коннект к базе данных.
 // Прописываем стандартные настройки Mongoose.
