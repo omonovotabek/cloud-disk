@@ -15,7 +15,7 @@ class AuthController {
       email, password: hashPassword
     })
     await user.save()
-    await fileService.createDir(new File({user:user._id, name:''}))
+    await fileService.createDir(req, new File({user:user._id, name:''}))
     res.status(201).json({message: "Ползовател создан", type: "created"})
     } catch (error) {
       next(error)

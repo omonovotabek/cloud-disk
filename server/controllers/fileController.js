@@ -14,7 +14,7 @@ class FileController {
         await fileService.createDir(file);
       } else {
         file.path = `${parentFile.path}\\${file.name}`;
-        await fileService.createDir(file);
+        await fileService.createDir(req, file);
         parentFile.childs.push(file._id);
         await parentFile.save();
       }
@@ -79,9 +79,9 @@ class FileController {
       user.usedSpace = user.usedSpace + file.size;
       let path;
       if (parent) {
-        path = `${process.env.filePath}\\${user._id}\\${parent.path}\\${file.name}`;
+        path = `${req.filePath}\\${user._id}\\${parent.path}\\${file.name}`;
       } else {
-        path = `${process.env.filePath}\\${user._id}\\${file.name}`;
+        path = `${req.filePath}\\${user._id}\\${file.name}`;
       }
       if (fs.existsSync(path)) {
         return res.status(200).json({ message: "File already exist" });
@@ -97,7 +97,7 @@ class FileController {
         type,
         size: file.size,
         path: filePath,
-        parent: parent?._id,
+        parent: parent ? parent._id : null,
         user: user._id,
       });
       // console.log(parent.path);
@@ -115,7 +115,7 @@ class FileController {
         _id: req.query.id,
         user: req.user.userId,
       });
-      const path = process.env.filePath + "\\" + file.user + "\\" + file.path;
+      const path =  fileService.getPath(req, file);
       if (fs.existsSync(path)) {
         return res.download(path, file.name);
       }
@@ -135,7 +135,7 @@ class FileController {
         return res.status(200).json({ message: "File not faund" });
       }
       if (!file.childs.length) {
-        fileService.deleteFile(file);
+        fileService.deleteFile(req, file);
         await file.remove();
       } else {
         return res.json({ message: "directory not empty" });

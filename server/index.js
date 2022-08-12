@@ -3,12 +3,15 @@ require("dotenv").config();
 // Подключаем бэкенд на Express.
 const express = require("express");
 const cors = require('cors')
+const path = require('path')
 const morgan = require('morgan')
 const fileUpload = require('express-fileupload')
 const errorHandler = require('./middlewares/error')
+const filePathMiddleware = require('./middlewares/filepathMiddleware')
 const app = express();
 app.use(express.json());  
 app.use(cors())
+app.use(filePathMiddleware(path.resolve(__dirname, '../static/files')))
 app.use(fileUpload({}))
 app.use(morgan('dev'))
 
