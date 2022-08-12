@@ -7,6 +7,9 @@
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=prodution node server/index"
   },
+  "engines": {
+    "node": "16.15.0"
+  },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "bcrypt": "^5.0.1",
