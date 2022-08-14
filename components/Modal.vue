@@ -4,10 +4,28 @@
     <div class="modal_x" v-if="showHide" @click="hide">
       <div class="col-4 offset-4" @click.stop>
         <div class="card">
-          <div class="card-header">
-            <input type="text" @input="onInput"/>
-            <button @click="hide">ddf</button>
-            <button @click="onSubmit">ok</button>
+          <div class="card-header p-3">
+            <div class="d-flex justify-content-end">
+              <b-icon-x-lg class="btn" @click="hide" />
+            </div>
+            <div class="input-group mt-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Name"
+                @input="onInput"
+                v-model="name"
+              />
+            </div>
+              <p>{{name ? isValidName : 'Введите имя папки'}}</p>
+
+            <button 
+            :disabled="Boolean(isValidName || !name)" 
+           @click="() => { onSubmit(); clearSubmit(); }"
+            class="btn btn-success"
+            >
+             Отправыть
+            </button>
           </div>
         </div>
       </div>
@@ -17,13 +35,17 @@
 
 <script>
 export default {
-  props: ["onSubmit", "onInput"],
+  props: ["onSubmit", "onInput", "isValidName"],
   data() {
     return {
       showHide: false,
+      name: "",
     };
   },
   methods: {
+    clearSubmit(){
+      this.name = ''
+    },
     show() {
       this.showHide = true;
     },

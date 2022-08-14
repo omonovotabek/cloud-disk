@@ -11,7 +11,7 @@ class FileController {
       const parentFile = await File.findOne({ _id: parent });
       if (!parentFile) {
         file.path = name;
-        await fileService.createDir(file);
+        await fileService.createDir(req, file);
       } else {
         file.path = `${parentFile.path}\\${file.name}`;
         await fileService.createDir(req, file);
@@ -134,12 +134,10 @@ class FileController {
       if (!file) {
         return res.status(200).json({ message: "File not faund" });
       }
-      if (!file.childs.length) {
+    
         fileService.deleteFile(req, file);
         await file.remove();
-      } else {
-        return res.json({ message: "directory not empty" });
-      }
+      
       return res.json({ message: "directory remove" });
     } catch (error) {
       next(error);

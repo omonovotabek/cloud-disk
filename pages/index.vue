@@ -1,17 +1,42 @@
 <template>
   <div class="container">
     <div class="row">
-      <button class="btn btn-danger" @click="exitDir">Назад</button>
-      <app-modal :onInput="onInputName" :onSubmit="onCreateDir" />
-      <input type="file" @change="onChangeFile" />
-      <button @click="onUploadFile">upload</button>
-      <input type="text" v-model="searchName" @input="searchNameChange" />
-      <select value="sort" @change="onChange">
-        <option value="date">По датe</option>
-        <option value="name">По имени</option>
-        <option value="type">По типу</option>
-      </select>
+      <div class="col-4 d-flex justify-content-between">
+        <button 
+        class="btn btn-dark" 
+        @click="exitDir"
+        >Назад</button>
+        <app-modal
+         :onInput="onInputName"
+         :onSubmit="onCreateDir"
+         :isValidName="isValidName"
+        />
+        <input 
+        id="file" 
+        type="file" 
+        style="display: none" 
+        @change="(e) => {onChangeFile(e); onUploadFile()}" 
+        /> 
+        <label 
+        for="file" 
+        class="btn m-0" 
+        style="border:1px dashed black"
+        >Загрузить файл</label>
+      </div>
+      <div class="col-2 d-flex justify-content-center"></div>
+      <div class="col-2 d-flex justify-content-center">
+           <input type="text" v-model="searchName" @input="searchNameChange" />
+      </div>
+      <div class="col-2 d-flex justify-content-center"></div>
+      <div class="col-2 d-flex justify-content-between">
+        <select value="sort" @change="onChange">
+          <option value="date">По датe</option>
+          <option value="name">По имени</option>
+          <option value="type">По типу</option>
+        </select>
+      </div>
     </div>
+
     <app-table
       :files="files"
       :openDir="openDir"
@@ -19,7 +44,9 @@
       :onDelete="onDelete"
       v-if="delay"
     />
+
     <app-loading v-else />
+
   </div>
 </template>
 
@@ -34,6 +61,7 @@ export default {
     return {
       delay: true,
       searchName: "",
+      isValidName: "",
       file: {},
       name: "",
       fileInput: null,
@@ -42,13 +70,22 @@ export default {
       dirIds: [],
     };
   },
+
   async asyncData({ store }) {
     const files = await store.dispatch("file/getFiles");
     return { files };
   },
+
+
+  
   methods: {
     onInputName(e) {
       this.name = e.target.value;
+      const uniqName = this.files.filter(
+        (file) => file.name === this.name
+      ).length;
+      if (uniqName) this.isValidName = "имя существующей папки";
+      else this.isValidName = "";
     },
 
     onChangeFile(e) {
@@ -56,23 +93,23 @@ export default {
     },
 
     async searchNameChange() {
-      if(this.searchName){
+      if (this.searchName) {
         this.files = await this.$store.dispatch(
           "file/searchFile",
           this.searchName
         );
-      }else{
-         this.files = await this.$store.dispatch("file/getFiles");
+      } else {
+        this.files = await this.$store.dispatch("file/getFiles");
       }
     },
     async onChange(e) {
       const sort = e.target.value;
-      const dirId = this.file._id;
+      const parentIdsCopy = [...this.dirIds]
+      const dirId = parentIdsCopy.pop();
       this.files = await this.$store.dispatch("file/getFiles", { sort, dirId });
     },
 
     async openDir(file) {
-     
       this.files = await this.$store.dispatch("file/getFiles", {
         dirId: file._id,
       });
@@ -136,10 +173,14 @@ export default {
     },
 
     async onDelete(file) {
-      const res = await this.$store.dispatch("file/deleteFile", file._id);
-      console.log(res);
-      if (!file.childs.length)
+        const isEmpty = await this.$store.dispatch("file/getFiles", {
+        dirId: file._id,
+      });
+      if(!isEmpty.length){
+        const res = await this.$store.dispatch("file/deleteFile", file._id);
         this.files = this.files.filter((item) => item._id !== file._id);
+        console.log(res);
+      }
     },
   },
 };
