@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="col-2 text-center">{{ file.date.slice(0, 10) }}</div>
-      <div class="col-2 text-center">{{ sizeFormat(file) }}</div>
+      <div class="col-2 text-center">{{ sizeFormat(file.size) }}</div>
     </div>
   </div>
 </template>
@@ -64,20 +64,19 @@ export default {
     outputHover() {
      this.id = ""
     },
-    sizeFormat(file) {
-      this.file  = file
-      // if (size === 0) {
-      //   return "dir";
-      // }
-      // if (size > 1024 * 1024 * 1024) {
-      //   return (size / (1024 * 1024 * 1024)).toFixed(1) + "Gb";
-      // }
-      // if (size > 1024 * 1024) {
-      //   return (size / (1024 * 1024)).toFixed(1) + "Mb";
-      // }
-      // if (size > 1024) {
-      //   return (size / 1024).toFixed(1) + "Kb";
-      // }
+    sizeFormat(size) {
+      if (size === 0) {
+        return "";
+      }
+      if (size > 1024 * 1024 * 1024) {
+        return (size / (1024 * 1024 * 1024)).toFixed(1) + "Gb";
+      }
+      if (size > 1024 * 1024) {
+        return (size / (1024 * 1024)).toFixed(1) + "Mb";
+      }
+      if (size > 1024) {
+        return (size / 1024).toFixed(1) + "Kb";
+      }
     },
   },
 };
