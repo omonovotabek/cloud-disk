@@ -1,5 +1,6 @@
 # cloud-disk
-## FullStack app
+## FullStack nuxt app diynamic site deploy heroku.
+## URL: https://disk-cloud.herokuapp.com/
 ## Build Setup
 
 ```bash
